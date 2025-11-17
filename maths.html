@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Calculateur de Prêt</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+                
+        button {
+            background: #3498db;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        button:hover {
+            background: #2980b9;
+        }
+        
+        #resultat {
+            background: #2ecc71;
+            color: white;
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Calculateur de Prêt Immobilier</h1>
+
+    <form>
+        <p><b>Montant du prêt (unités monétaires) :</b></p>
+        <input type="number" id="montant" placeholder="Ex: 200000">
+        
+        <p><b>Taux d'intérêt annuel (%) :</b></p>
+        <input type="number" id="taux" step="0.01" placeholder="Ex: 3.5">
+        
+        <p><b>Durée (années) :</b></p>
+        <input type="number" id="duree" placeholder="Ex: 5">
+        
+        <br><br>
+        <button type="button" onclick="calculerLeMontantMensuel()">Calculer</button>
+    </form>
+    
+    <div id="resultat">Résultat apparaîtra ici :</div>
+
+    <script>
+        function calculerLeMontantMensuel() {
+            let montant = document.getElementById('montant').value;
+            let taux = document.getElementById('taux').value;
+            let duree = document.getElementById('duree').value;
+            
+            if(montant === "" || taux === "" || duree === "") {
+                alert("Veuillez remplir tous les champs avant de calculer.");
+                return;
+            }
+
+            montant = parseFloat(montant);
+            taux = parseFloat(taux);
+            duree = parseFloat(duree);
+
+            if(montant <= 0 || taux <= 0 || taux > 100 || duree <= 0) {
+                alert("Tous les nombres doivent être positifs et conforme au règlement !");
+                return;
+            }
+
+            let r = (taux / 100) / 12;
+            let n = duree * 12;
+            let numerateur = r * Math.pow(1 + r, n);
+            let denominateur = Math.pow(1 + r, n) - 1;
+            let paiement = montant * (numerateur / denominateur);
+            paiement = paiement.toFixed(2);
+
+            document.getElementById('resultat').textContent = "Votre paiement mensuel : " + paiement + " unités monétaires";
+        }
+    </script>
+</body>
+</html>
